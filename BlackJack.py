@@ -200,14 +200,16 @@ class BlackJack():
                 [self.Cards[i[0]] for i in self.__Computer_cards])
 
     def __reset(self):
-
+        
+        final_balance = "+" + str(self.Actual_money - self.initial_money) if (
+            self.Actual_money - self.initial_money) > 0 else str(self.Actual_money - self.initial_money)
         if self.Actual_money > 0:
             ask_user = input("Do yo want to play again? (y/n)\n")
             if ask_user == "y" or ask_user == "yes":
                 self.__init__()
             else:
                 print("Thanks for playing. Your final balance is " +
-                      str(self.initial_money - self.Actual_money) + "\n")
+                      final_balance + " €\n")
         else:
             print("You have lost all you money, thanks for playing.")
 
