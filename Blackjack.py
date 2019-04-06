@@ -154,7 +154,12 @@ def blackjack() -> None:
                 print()
                 end_game()
                 break
-
+                
+    def reset_computer_cards():
+        nonlocal computer_cards, computer_points
+        computer_cards = my_deck.get_initial_cards()
+        computer_points = Deck.sum_points(computer_cards)
+        
     def end_game():
         print("##############################################################################################################")
         for player in players:
@@ -199,6 +204,7 @@ def blackjack() -> None:
             players.remove(player)
 
         if players:
+            reset_computer_cards()
             initialization()
 
     initialization()
