@@ -16,6 +16,7 @@ def blackjack() -> None:
     computer_cards = my_deck.get_initial_cards()
     computer_points = Deck.sum_points(computer_cards)
 
+    #---------------------------------------------------------------------------------#
     def initialization():
         nonlocal check_first_game
         if check_first_game:
@@ -39,14 +40,16 @@ def blackjack() -> None:
                     except ValueError:
                         print("Please, use only numbers.\n")
 
-        start_game()
+        game()
 
-    def start_game():
+    def game():
         print("The game has started.\n")
         print("The first card of the bank is " + str(computer_cards[0]))
         for player in players:
             player_turn(player)
         computer_turn()
+        end_game()
+        reset()
 
     def check_player_bet(player: Player):
         for _ in range(5):
@@ -102,14 +105,18 @@ def blackjack() -> None:
                 break
 
     def player_turn(player: Player):
-        print("##############################################################################################################")
+        print("#########################################\t" + str(player) +
+              "'s turn\t   #########################################")
         print(
             str(player) + ", your actual money is " +
             str(player.get_actual_money()) + "€\n")
         check_player_bet(player)
-        print("Your turn has started.\nYour cards are " +
-              str(player.get_cards()[0]) + " and " +
-              str(player.get_cards()[1]))
+        print("Your turn has started.\nYour cards are: ")
+        print(
+            str(player.get_cards()[0]),
+            str(player.get_cards()[1]),
+            sep=" and ")
+        print()
         sleep(2)
         ask_if_hit(player)
 
@@ -118,7 +125,6 @@ def blackjack() -> None:
         if computer_points > 21:
             print("The bank busted. The game ended :)\n")
             computer_points = 1
-            end_game()
             return True
         return False
 
@@ -135,8 +141,8 @@ def blackjack() -> None:
 
     def computer_turn():
         nonlocal computer_cards, computer_points
-        print("##############################################################################################################")
-        print("Now it is the bank turn.\n")
+        print("#########################################\tBank's Turn\t" +
+              "  #########################################")
         sleep(2)
         for _ in range(21):
             sleep(2)
@@ -148,20 +154,19 @@ def blackjack() -> None:
                     computer_points = Deck.sum_points(computer_cards)
                 else:
                     print()
-                    end_game()
                     break
             else:
                 print()
-                end_game()
                 break
-                
+
     def reset_computer_cards():
         nonlocal computer_cards, computer_points
         computer_cards = my_deck.get_initial_cards()
         computer_points = Deck.sum_points(computer_cards)
-        
+
     def end_game():
-        print("##############################################################################################################")
+        print("#########################################\tResults\t" +
+              "      #########################################")
         for player in players:
             if player.get_points() == 21 or\
             player.get_points() > computer_points:
@@ -174,10 +179,11 @@ def blackjack() -> None:
             else:
                 player.update_actual_money(-player.get_actual_bet())
                 print(str(player) + " lost against the bank :(\n")
-        reset()
+        sleep(1)
 
     def reset():
-        print("##############################################################################################################")
+        print("#########################################\t" +
+              "Game Finished\t    #########################################")
         delete_players = []
         for player in players:
             final_balance = str(player.get_actual_money() -
@@ -206,6 +212,8 @@ def blackjack() -> None:
         if players:
             reset_computer_cards()
             initialization()
+
+    #---------------------------------------------------------------------------------#
 
     initialization()
 
