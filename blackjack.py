@@ -2,8 +2,8 @@
 
 from time import sleep
 
-from Deck import Deck
-from Player import Player, get_my_Deck
+from deck import Deck
+from player import Player, get_my_Deck
 
 
 def blackjack() -> None:
@@ -118,7 +118,7 @@ def blackjack() -> None:
         print("Your turn has started.\nYour cards are: ")
         print(f"{str(player.get_cards()[0])} and {str(player.get_cards()[1])}")
         print()
-        sleep(2)
+        sleep(1)
         ask_if_hit(player)
 
     def dealer_win_lose_condition() -> bool:
