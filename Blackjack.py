@@ -1,5 +1,5 @@
 '''
-    The 21 BlackJack, now in Python
+    The 21 BlackJack, now in Python. 
 '''
 from time import sleep
 
@@ -35,11 +35,11 @@ def blackjack() -> None:
                             input(
                                 "How much money do you have? (Use only numbers)\n"
                             ))
-                        players.append(Player(name, initial_money))
-                        break
                     except ValueError:
                         print("Please, use only numbers.\n")
-
+                    else:
+                        players.append(Player(name, initial_money))
+                        break
         game()
 
     def game():
@@ -55,6 +55,9 @@ def blackjack() -> None:
         for _ in range(5):
             try:
                 bet = int(input("What bet do you wanna make?\n"))
+            except SyntaxError:
+                print("Please, use only numbers.\n")
+            else:
                 if bet > player.get_actual_money():
                     print(
                         "Your bet cannot be greater than your actual money.\n")
@@ -63,9 +66,6 @@ def blackjack() -> None:
                 else:
                     player.set_actual_bet(bet)
                     break
-
-            except SyntaxError:
-                print("Please, use only numbers.\n")
 
     def player_win_lose_condition(player: Player) -> bool:
         result = None
@@ -95,7 +95,9 @@ def blackjack() -> None:
             if player_win_lose_condition(player) is None:
                 decision = input("Do you wanna hit? (y/n)\n")
                 if decision.strip().lower() == "y"\
-                or decision.strip().lower() == "yes":
+                or decision.strip().lower() == "yes"\
+                or decision.strip().lower() == "true"\
+                or decision.strip().lower() == "1":
                     player.deal_card()
                     show_player_cards(player)
                 else:
@@ -112,10 +114,9 @@ def blackjack() -> None:
             str(player.get_actual_money()) + "€\n")
         check_player_bet(player)
         print("Your turn has started.\nYour cards are: ")
-        print(
-            str(player.get_cards()[0]),
-            str(player.get_cards()[1]),
-            sep=" and ")
+        print(str(player.get_cards()[0]),
+              str(player.get_cards()[1]),
+              sep=" and ")
         print()
         sleep(2)
         ask_if_hit(player)
@@ -168,8 +169,8 @@ def blackjack() -> None:
         print("#########################################\tResults\t" +
               "      #########################################")
         for player in players:
-            if player.get_points() == 21 or\
-            player.get_points() > computer_points:
+            if player.get_points() == 21\
+            or player.get_points() > computer_points:
                 player.update_actual_money(player.get_actual_bet())
                 print(
                     str(player) + " won " + str(player.get_actual_bet() * 2) +
@@ -183,7 +184,7 @@ def blackjack() -> None:
 
     def reset():
         print("#########################################\t" +
-              "Game Finished\t    #########################################")
+              "Game Finished\t    ###################################")
         delete_players = []
         for player in players:
             final_balance = str(player.get_actual_money() -
