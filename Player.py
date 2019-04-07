@@ -11,6 +11,9 @@ class Player():
         self.__cards = myDeck.get_initial_cards()
         self.__points = Deck.sum_points(self.__cards)
         self.__actualBet = 0
+        self.__aces = 0
+        for card in self.__cards:
+            self.__count_aces(card)
 
     def __str__(self):
         return self.__name
@@ -31,19 +34,24 @@ class Player():
         self.__cards.clear()
         self.__cards = myDeck.get_initial_cards()
         self.__points = Deck.sum_points(self.__cards)
+    
+    def __count_aces(self, card: Card):
+        if card.get_name() == "ACE":
+            self.__aces += 1
 
-    def check_ace(self):
-        for card in self.__cards:
-            if card.get_name() == "ACE":
-                if self.__points > 21:
-                    self.__points -= 10
+    def __check_ace_points(self):
+        while self.__points > 21 and self.__aces:
+            self.__points -= 10
+            self.__aces -= 1
 
     def update_points(self):
         self.__points = Deck.sum_points(self.__cards)
-        self.check_ace()
+        self.__check_ace_points()
 
     def deal_card(self):
-        self.__cards.append(myDeck.deal_card())
+        card = myDeck.deal_card()
+        self.__count_aces(card)
+        self.__cards.append(card)
         self.update_points()
 
     def loser_points(self):
