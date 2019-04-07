@@ -1,6 +1,5 @@
-'''
-    The 21 BlackJack, now in Python. 
-'''
+'''The 21 BlackJack, now in Python. '''
+
 from time import sleep
 
 from Deck import Deck
@@ -19,8 +18,8 @@ def blackjack() -> None:
     #---------------------------------------------------------------------------------#
     def initialization():
         nonlocal check_first_game
-        print("#########################################\t" +
-              "Game Started\t    #######################################")
+        print("#########################################\tGame Started\t   \
+#########################################")
         if check_first_game:
             check_first_game = False
             try:
@@ -46,7 +45,7 @@ def blackjack() -> None:
 
     def game():
         print("The game has started.\n")
-        print("The first card of the dealer is " + str(dealer_cards[0]))
+        print(f"The first card of the dealer is {str(dealer_cards[0])}")
         for player in players:
             player_turn(player)
         dealer_turn()
@@ -109,16 +108,15 @@ def blackjack() -> None:
                 break
 
     def player_turn(player: Player):
-        print("#########################################\t" + str(player) +
-              "'s turn\t   #########################################")
         print(
-            str(player) + ", your actual money is " +
-            str(player.get_actual_money()) + "€\n")
+            f"#########################################\t{str(player)}'s turn\t   \
+#########################################")
+        print(
+            f"{str(player)}, your actual money is {str(player.get_actual_money())} €\n"
+        )
         check_player_bet(player)
         print("Your turn has started.\nYour cards are: ")
-        print(str(player.get_cards()[0]),
-              str(player.get_cards()[1]),
-              sep=" and ")
+        print(f"{str(player.get_cards()[0])} and {str(player.get_cards()[1])}")
         print()
         sleep(2)
         ask_if_hit(player)
@@ -144,8 +142,8 @@ def blackjack() -> None:
 
     def dealer_turn():
         nonlocal dealer_cards, dealer_points
-        print("#########################################\tDealer's Turn\t" +
-              "    #########################################")
+        print("#########################################\tDealer's Turn\t   \
+#########################################")
         sleep(2)
         for _ in range(21):
             sleep(2)
@@ -168,45 +166,47 @@ def blackjack() -> None:
         dealer_points = Deck.sum_points(dealer_cards)
 
     def end_game():
-        print("#########################################\tResults\t" +
-              "      #########################################")
+        print("#########################################\tResults\t      \
+##############################################")
         for player in players:
             if player.get_points() == 21\
             or player.get_points() > dealer_points:
                 player.update_actual_money(player.get_actual_bet())
                 print(
-                    str(player) + " won " + str(player.get_actual_bet() * 2) +
-                    "€ :)\n")
+                    f"{str(player)} won {str(player.get_actual_bet() * 2)}€ :)\n"
+                )
             elif player.get_points() == dealer_points:
-                print(str(player) + ", it is a Tie! :|\n")
+                print(f"{str(player)}, it is a Tie! :|\n")
             else:
                 player.update_actual_money(-player.get_actual_bet())
-                print(str(player) + " lost against the dealer :(\n")
+                print(f"{str(player)} lost against the dealer :(\n")
         sleep(1)
 
     def reset():
-        print("#########################################\t" +
-              "Game Finished\t    ###################################")
+        print("#########################################\tGame Finished\t   \
+#########################################")
         delete_players = []
         for player in players:
-            final_balance = str(player.get_actual_money() -
-                                player.get_initial_money()) + "€"
+            final_balance = f"{str(player.get_actual_money() - player.get_initial_money())} €"
             if "-" not in final_balance:
                 final_balance = "+" + final_balance
             if player.get_actual_money() > 0:
                 decision = input(
                     str(player) + ", do you want to play again? (y/n)\n")
-                if decision.strip().lower() == "y" or\
-                decision.strip().lower() == "yes":
+                if decision.strip().lower() == "y"\
+                or decision.strip().lower() == "yes"\
+                or decision.strip().lower() == "true"\
+                or decision.strip().lower() == "1":
                     player.reset_cards()
                 else:
-                    print("Thanks for playing, " + str(player) +
-                          " your final balance is " + final_balance + "\n")
+                    print(
+                        f"Thanks for playing, {str(player)} your final balance is {final_balance}\n"
+                    )
                     delete_players.append(player)
             else:
                 print(
-                    str(player) +
-                    ", you have lost all your money. Thanks for playing\n")
+                    f"{str(player)} , you have lost all your money. Thanks for playing\n"
+                )
                 delete_players.append(player)
 
         for player_to_delete in delete_players:
