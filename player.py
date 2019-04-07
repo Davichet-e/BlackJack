@@ -1,10 +1,9 @@
-from Deck import Deck, Card
+from deck import Deck, Card
 
 myDeck = Deck()
 
-
 class Player():
-    def __init__(self, name, initialMoney):
+    def __init__(self, name: str, initialMoney: int):
         self.__name = name
         self.__initialMoney = initialMoney
         self.__actualMoney = initialMoney
@@ -15,19 +14,19 @@ class Player():
         for card in self.__cards:
             self.__count_aces(card)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.__name
 
-    def get_initial_money(self):
+    def get_initial_money(self) -> int:
         return self.__initialMoney
 
-    def get_actual_money(self):
+    def get_actual_money(self) -> int:
         return self.__actualMoney
 
-    def update_actual_money(self, money):
+    def update_actual_money(self, money: int):
         self.__actualMoney += money
 
-    def get_cards(self):
+    def get_cards(self) -> list:
         return self.__cards
 
     def reset_cards(self):
@@ -57,15 +56,15 @@ class Player():
     def loser_points(self):
         self.__points = 0
 
-    def get_points(self):
+    def get_points(self) -> int:
         return self.__points
 
-    def get_actual_bet(self):
+    def get_actual_bet(self) -> int:
         return self.__actualBet
 
-    def set_actual_bet(self, newBet):
+    def set_actual_bet(self, newBet: int):
         self.__actualBet = newBet
 
 
-def get_my_Deck():
+def get_my_Deck() -> Deck:
     return myDeck
