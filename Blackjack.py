@@ -13,12 +13,14 @@ def blackjack() -> None:
     check_first_game = True
     my_deck = get_my_Deck()
     players = []
-    computer_cards = my_deck.get_initial_cards()
-    computer_points = Deck.sum_points(computer_cards)
+    dealer_cards = my_deck.get_initial_cards()
+    dealer_points = Deck.sum_points(dealer_cards)
 
     #---------------------------------------------------------------------------------#
     def initialization():
         nonlocal check_first_game
+        print("#########################################\t" +
+              "Game Started\t    #######################################")
         if check_first_game:
             check_first_game = False
             try:
@@ -44,10 +46,10 @@ def blackjack() -> None:
 
     def game():
         print("The game has started.\n")
-        print("The first card of the bank is " + str(computer_cards[0]))
+        print("The first card of the dealer is " + str(dealer_cards[0]))
         for player in players:
             player_turn(player)
-        computer_turn()
+        dealer_turn()
         end_game()
         reset()
 
@@ -121,38 +123,38 @@ def blackjack() -> None:
         sleep(2)
         ask_if_hit(player)
 
-    def computer_win_lose_condition() -> bool:
-        nonlocal computer_points
-        if computer_points > 21:
-            print("The bank busted. The game ended :)\n")
-            computer_points = 1
+    def dealer_win_lose_condition() -> bool:
+        nonlocal dealer_points
+        if dealer_points > 21:
+            print("The dealer busted. The game ended :)\n")
+            dealer_points = 1
             return True
         return False
 
-    def show_computer_cards():
-        nonlocal computer_cards
+    def show_dealer_cards():
+        nonlocal dealer_cards
         for i in range(21):
             if i == 0:
-                print("The bank cards are: ", end="")
+                print("The dealer cards are: ", end="")
             try:
-                print(computer_cards[i], end=", ")
+                print(dealer_cards[i], end=", ")
             except IndexError:
                 print()
                 break
 
-    def computer_turn():
-        nonlocal computer_cards, computer_points
-        print("#########################################\tBank's Turn\t" +
-              "  #########################################")
+    def dealer_turn():
+        nonlocal dealer_cards, dealer_points
+        print("#########################################\tDealer's Turn\t" +
+              "    #########################################")
         sleep(2)
         for _ in range(21):
             sleep(2)
-            show_computer_cards()
-            if not computer_win_lose_condition():
-                if computer_points < 17:
-                    print("The bank is going to hit a card\n")
-                    computer_cards.append(my_deck.deal_card())
-                    computer_points = Deck.sum_points(computer_cards)
+            show_dealer_cards()
+            if not dealer_win_lose_condition():
+                if dealer_points < 17:
+                    print("The dealer is going to hit a card\n")
+                    dealer_cards.append(my_deck.deal_card())
+                    dealer_points = Deck.sum_points(dealer_cards)
                 else:
                     print()
                     break
@@ -160,26 +162,26 @@ def blackjack() -> None:
                 print()
                 break
 
-    def reset_computer_cards():
-        nonlocal computer_cards, computer_points
-        computer_cards = my_deck.get_initial_cards()
-        computer_points = Deck.sum_points(computer_cards)
+    def reset_dealer_cards():
+        nonlocal dealer_cards, dealer_points
+        dealer_cards = my_deck.get_initial_cards()
+        dealer_points = Deck.sum_points(dealer_cards)
 
     def end_game():
         print("#########################################\tResults\t" +
               "      #########################################")
         for player in players:
             if player.get_points() == 21\
-            or player.get_points() > computer_points:
+            or player.get_points() > dealer_points:
                 player.update_actual_money(player.get_actual_bet())
                 print(
                     str(player) + " won " + str(player.get_actual_bet() * 2) +
                     "€ :)\n")
-            elif player.get_points() == computer_points:
+            elif player.get_points() == dealer_points:
                 print(str(player) + ", it is a Tie! :|\n")
             else:
                 player.update_actual_money(-player.get_actual_bet())
-                print(str(player) + " lost against the bank :(\n")
+                print(str(player) + " lost against the dealer :(\n")
         sleep(1)
 
     def reset():
@@ -207,11 +209,11 @@ def blackjack() -> None:
                     ", you have lost all your money. Thanks for playing\n")
                 delete_players.append(player)
 
-        for player in delete_players:
-            players.remove(player)
+        for player_to_delete in delete_players:
+            players.remove(player_to_delete)
 
         if players:
-            reset_computer_cards()
+            reset_dealer_cards()
             initialization()
 
     #---------------------------------------------------------------------------------#
