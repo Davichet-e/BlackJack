@@ -4,31 +4,39 @@ Author: David García Morillo
 """
 
 
-class Player():
+class Player:
     """
-        TODO
+    TODO
     """
 
     def __init__(self, name: str, initialMoney: int):
-        self.__name = name
-        self.__initialMoney = initialMoney
-        self.__actualMoney = initialMoney
-        self.__actualBet = 0
+        assert isinstance(name, str) and isinstance(initialMoney, int)
+        self._name: str = name
+        self._initialMoney: str = initialMoney
+        self._actualMoney: int = initialMoney
+        self._actualBet: int = 0
 
-    def __str__(self) -> str:
-        return self.__name
+    def __repr__(self) -> str:
+        return self._name
 
-    def get_initial_money(self) -> int:
-        return self.__initialMoney
+    @property
+    def initial_money(self) -> int:
+        return self._initialMoney
 
-    def get_actual_money(self) -> int:
-        return self.__actualMoney
+    @property
+    def actual_money(self) -> int:
+        return self._actualMoney
 
-    def update_actual_money(self, money: int):
-        self.__actualMoney += money
+    @actual_money.setter
+    def actual_money(self, money: int) -> None:
+        assert isinstance(money, int)
+        self._actualMoney = money
 
-    def get_actual_bet(self) -> int:
-        return self.__actualBet
+    @property
+    def actual_bet(self) -> int:
+        return self._actualBet
 
-    def set_actual_bet(self, newBet: int):
-        self.__actualBet = newBet
+    @actual_bet.setter
+    def actual_bet(self, new_bet: int) -> None:
+        assert isinstance(new_bet, int)
+        self._actualBet = new_bet
