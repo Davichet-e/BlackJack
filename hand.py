@@ -1,64 +1,76 @@
-'''
+"""
 Author: David García Morillo
-'''
+"""
+from typing import List
+
 from deck import Card, Deck
 
-my_deck = Deck()
+my_deck: Deck = Deck()
 
 
-class BlackJackHand():
+class BlackJackHand:
     """
     TODO
     """
+
     def __init__(self):
-        self.__cards = my_deck.get_initial_cards()
-        self.__points = Deck.sum_points(self.__cards)
-        self.__aces = 0
-        for card in self.__cards:
-            self.__count_aces(card)
-        self.__check_ace_points()
+        self._cards: List[Card] = my_deck.get_initial_cards()
+        self._points: int = Deck.sum_points(self._cards)
+        self._aces: int = 0
+        for card in self._cards:
+            self._count_aces(card)
+        self._check_ace_points()
 
-    def get_cards(self) -> list:
-        return self.__cards
+    def __repr__(self) -> str:
+        return (
+            f"BlackJackHand(cards={list(map(repr, self._cards))}, points={self._points}"
+        )
 
-    def reset_cards(self):
-        self.__cards.clear()
-        self.__aces = 0
-        self.__cards = my_deck.get_initial_cards()
-        for card in self.__cards:
-            self.__count_aces(card)
-        self.__points = Deck.sum_points(self.__cards)
+    @property
+    def cards(self) -> List[Card]:
+        return self._cards
 
-    def __count_aces(self, card: Card):
-        if card.get_name() == "ACE":
-            self.__aces += 1
+    @property
+    def points(self) -> int:
+        return self._points
 
-    def __check_ace_points(self):
-        while self.__points > 21 and self.__aces:
-            self.__points -= 10
-            self.__aces -= 1
-
-    def __check_if_lose(self):
-        if self.__points > 21:
-            self.__points = 0
-
-    def __update_points(self, card: Card):
-        self.__points += card.get_value()
-        self.__check_ace_points()
+    def initialize_attributes(self):
+        if issubclass(self.__class__, BlackJackHand):
+            # Checks if the class is being inherited. If so,
+            # calls only the __init__ method of this class
+            BlackJackHand.__init__(self)
+        else:
+            self.__init__()
 
     def deal_card(self):
-        card = my_deck.deal_card()
-        self.__count_aces(card)
-        self.__cards.append(card)
-        self.__update_points(card)
-        self.__check_if_lose()
+        card: Card = my_deck.deal_card()
+        self._count_aces(card)
+        self._cards.append(card)
+        self._update_points(card)
+        self._check_if_lose()
 
-    def loser_points(self):
-        self.__points = 0
+    def _count_aces(self, card: Card):
+        assert isinstance(card, Card), "The 'card' type must be Card"
+        if card.name == "ACE":
+            self._aces += 1
 
-    def get_points(self) -> int:
-        return self.__points
+    def _check_ace_points(self):
+        while self._points > 21 and self._aces:
+            self._points -= 10
+            self._aces -= 1
+
+    def _check_if_lose(self):
+        if self._points > 21:
+            self._points = 0
+
+    def _update_points(self, card: Card):
+        assert isinstance(card, Card), "The 'card' type must be Card"
+        self._points += card.value
+        self._check_ace_points()
 
 
 def get_my_deck() -> Deck:
     return my_deck
+
+
+HAND1 = BlackJackHand()
