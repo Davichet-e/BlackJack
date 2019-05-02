@@ -109,15 +109,15 @@ def blackjack() -> None:
                     player.actual_bet = bet
                     break
 
-    def player_win_lose_condition(player: BlackJackPlayer) -> Optional[bool]:
-        result: bool
+    def player_win_or_lose(player: BlackJackPlayer) -> bool:
+        result: bool = False
         if player.points == 21:
             print("\t\t\t\tBLACKJACK")
             result = True
 
         elif not player.points:
             print("\t\t\t\tBUST.\n\t\t\t\tI'm afraid you lose this game :(\n")
-            result = False
+            result = True
 
         return result
 
@@ -148,7 +148,7 @@ def blackjack() -> None:
         print(f"\t\t\t\t{player.cards[0]!r} and {player.cards[1]!r}")
         print()
         sleep(1)
-        while player_win_lose_condition(player) is None:
+        while not player_win_or_lose(player):
             hit = ask_if_hit()
             if hit:
                 player.deal_card()
