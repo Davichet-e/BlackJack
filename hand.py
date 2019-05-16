@@ -18,7 +18,7 @@ class BlackJackHand:
         self._points: int = Deck.sum_points(self._cards)
         self._aces: int = 0
         for card in self._cards:
-            self._count_aces(card)
+            self._check_if_ace(card)
         self._check_ace_points()
 
     def __repr__(self) -> str:
@@ -32,23 +32,17 @@ class BlackJackHand:
     def points(self) -> int:
         return self._points
 
-    def initialize_attributes(self):
-        if issubclass(self.__class__, BlackJackHand):
-            # Checks if the class is being inherited. If so,
-            # calls only the __init__ method of this class
-            BlackJackHand.__init__(self)
-        else:
-            self.__init__()
+    def initialize_attributes(self) -> None:
+        BlackJackHand.__init__(self)
 
     def deal_card(self):
         card: Card = my_deck.deal_card()
-        self._count_aces(card)
+        self._check_if_ace(card)
         self._cards.append(card)
         self._update_points(card)
         self._check_if_lose()
 
-    def _count_aces(self, card: Card):
-        assert isinstance(card, Card), "The 'card' type must be Card"
+    def _check_if_ace(self, card: Card):
         if card.name == "ACE":
             self._aces += 1
 
@@ -62,11 +56,9 @@ class BlackJackHand:
             self._points = 0
 
     def _update_points(self, card: Card):
-        assert isinstance(card, Card), "The 'card' type must be Card"
         self._points += card.value
         self._check_ace_points()
 
 
 def get_my_deck() -> Deck:
     return my_deck
-

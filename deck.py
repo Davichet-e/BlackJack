@@ -4,7 +4,7 @@ Author: David García Morillo
 """
 
 from random import shuffle
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 
 class Card:
@@ -96,7 +96,4 @@ class Deck:
     @staticmethod
     def sum_points(cards: List[Card]) -> int:
         """Sum the points of the list of cards which are received as a parameter"""
-        points: int = 0
-        for card in cards:
-            points += card.value
-        return points
+        return sum([card.value for card in cards])

@@ -6,21 +6,33 @@ Author: David García Morillo
 
 class Player:
     """
-    TODO
+    This class implements a casino player in python\n
+    
+    Parameters
+    ----------
+    name: str\n
+    initial_money: int
     """
 
     def __init__(self, name: str, initial_money: int):
-        assert isinstance(name, str) and isinstance(initial_money, int)
+        assert isinstance(name, str), "The type of 'name' must be str"
+        assert isinstance(initial_money, int), "The type of 'initial_money' must be int"
         self._name: str = name
         self._initial_money: int = initial_money
         self._actual_money: int = initial_money
-        self._actual_bet: int = 0
+        self._actual_bet: int
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return self._name
 
+    def __repr__(self) -> str:
+        return (
+            f"Player(name={self._name}, initial money={self._initial_money}, "
+            f"actual money={self._actual_money}, actual bet={self._actual_bet})"
+        )
+
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     @property
