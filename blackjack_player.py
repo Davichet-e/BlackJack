@@ -7,12 +7,7 @@ from player import Player
 
 class BlackJackPlayer(Player, BlackJackHand):
     """This class uses the 'Player' and 'BlackJackHand' classes 
-    to create a BlackJack player model in python.\n
-
-    Parameters
-    ----------
-    name: str\n
-    initial_money: int
+    to create a BlackJack player model in python.
     """
 
     def __init__(self, name: str, initial_money: int):
@@ -20,5 +15,5 @@ class BlackJackPlayer(Player, BlackJackHand):
         BlackJackHand.__init__(self)
 
     @property
-    def hand(self):
-        return BlackJackHand.__repr__(self)
+    def hand(self) -> str:
+        return BlackJackHand.__str__(self)

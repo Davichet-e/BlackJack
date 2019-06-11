@@ -28,9 +28,12 @@ def blackjack() -> None:
                 "\tGame Started\t   #########################################"
             )
         )
+
         print(f"\t\t\t\tThe first card of the dealer is {dealer_hand.cards[0]}")
+
         for player in players:
             player_turn(player)
+
         dealer_turn()
         end_game()
         if not next_game():
@@ -65,7 +68,7 @@ def ask_number_of_people() -> int:
 
 
 def ask_and_set_player_attributes(num_of_people: int) -> None:
-    """Ask the players their names and initial money and 
+    """Ask the players their names and initial money and
     pass them to the 'BlackJackPlayer' class"""
     for i in range(num_of_people):
         name: str = input(f"\t\t\t\tPlease, enter your name, Player {i + 1}\n\t\t\t\t")
@@ -218,7 +221,7 @@ def end_game() -> None:
 
 def ask_if_reset(player: BlackJackPlayer) -> bool:
     """Ask a player if he/she wants to play another game"""
-    player_resets: bool
+    player_resets: bool = False
     final_balance: str = f"{player.actual_money - player.initial_money} €"
     # Check if 'final_balance' is negative, if not, adds a '+' sign
     if "-" not in final_balance:
@@ -240,16 +243,15 @@ def ask_if_reset(player: BlackJackPlayer) -> bool:
                     f" your final balance is {final_balance}\n"
                 )
             )
-            player_resets = False
 
     else:
         print(f"\t\t\t\t{player}, you have lost all your money. Thanks for playing\n")
-        player_resets = False
 
     return player_resets
 
 
 def next_game() -> bool:
+    global players
     """Check if there are players for a next game"""
     print(
         (
@@ -257,10 +259,8 @@ def next_game() -> bool:
             "\t   #########################################"
         )
     )
-
-    for player in players:
-        if not ask_if_reset(player):
-            players.remove(player)
+    
+    players = [player for player in players if ask_if_reset(player)]
 
     print("\n\n\n\n\n")
 

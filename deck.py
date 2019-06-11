@@ -4,7 +4,7 @@ Author: David García Morillo
 """
 
 from random import shuffle
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 
 class Card:
@@ -15,7 +15,7 @@ class Card:
         self._suit: str = suit
         self._value: int = value
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return f"{self._name} of {self._suit}"
 
     @property
@@ -37,7 +37,7 @@ class Card:
 class Deck:
     """This class implements the standard 52-card deck"""
 
-    _SUITS: tuple = ("♣", "♥", "♠", "♦")
+    _SUITS: Tuple[str, ...] = ("♣", "♥", "♠", "♦")
     _CARDS: Dict[str, int] = dict(
         ACE=11,
         TWO=2,
@@ -61,17 +61,17 @@ class Deck:
                 self._deck.append(Card(card[0], suit, card[1]))
         shuffle(self._deck)
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         cards_repr: str = ""
         for card in self._deck:
-            cards_repr += f"\n{card.__repr__()}"
+            cards_repr += f"\n{card}"
         return f"Deck cards:\n{cards_repr}"
 
     def __len__(self):
         return len(self._deck)
 
     @property
-    def suits(self) -> tuple:
+    def suits(self) -> Tuple[str, ...]:
         """Returns the suits of the deck"""
         return self._SUITS
 
@@ -82,15 +82,12 @@ class Deck:
 
     def deal_card(self) -> Card:
         """Returns a random card of the deck."""
-        top: Card = self._deck[0]
-        self._deck.remove(top)
-        return top
+        card: Card = self._deck.pop()
+        return card
 
     def get_initial_cards(self) -> List[Card]:
         """Returns 2 random cards of the deck"""
-        initial_cards: List[Card] = self._deck[0:2]
-        for card in initial_cards:
-            self._deck.remove(card)
+        initial_cards: List[Card] = [self._deck.pop(), self._deck.pop()]
         return initial_cards
 
     @staticmethod
