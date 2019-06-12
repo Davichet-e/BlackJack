@@ -8,7 +8,7 @@ from deck import Card, Deck
 
 class BlackJackHand:
     """
-    TODO
+    This class represents a 21 BlackJack hand on python 
     """
 
     deck: Deck = Deck()
