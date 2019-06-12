@@ -4,34 +4,18 @@ Author: David García Morillo
 """
 
 from random import shuffle
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, NamedTuple
 
 
-class Card:
+class Card(NamedTuple):
     """This class implements the cards of the standard 52-card deck"""
 
-    def __init__(self, name: str, suit: str, value: int):
-        self._name: str = name
-        self._suit: str = suit
-        self._value: int = value
+    name: str
+    value: int
+    suit: str
 
     def __str__(self) -> str:
-        return f"{self._name} of {self._suit}"
-
-    @property
-    def name(self) -> str:
-        """Returns the name of the card"""
-        return self._name
-
-    @property
-    def value(self) -> int:
-        """Returns the value of the card"""
-        return self._value
-
-    @property
-    def suit(self) -> str:
-        """Returns the suit of the card"""
-        return self._suit
+        return f"{self.name} of {self.suit}"
 
 
 class Deck:
@@ -55,20 +39,25 @@ class Deck:
     )
 
     def __init__(self):
-        self._deck: List[Card] = []
-        for suit in self._SUITS:
-            for card in self._CARDS.items():
-                self._deck.append(Card(card[0], suit, card[1]))
+        self._deck: List[Card] = [
+            Card(card_name, card_value, suit)
+            for suit in self._SUITS
+            for card_name, card_value in self._CARDS.items()
+        ]
         shuffle(self._deck)
 
     def __str__(self) -> str:
-        cards_repr: str = ""
-        for card in self._deck:
-            cards_repr += f"\n{card}"
-        return f"Deck cards:\n{cards_repr}"
+        cards_repr: str = "\n".join([f"{card}" for card in self._deck])
+        return f"Deck cards:\n\n{cards_repr}"
+
+    def __repr__(self) -> str:
+        return f"Deck(deck={self._deck})"
 
     def __len__(self):
         return len(self._deck)
+
+    def __getitem__(self, position: int) -> Card:
+        return self._deck[position]
 
     @property
     def suits(self) -> Tuple[str, ...]:
