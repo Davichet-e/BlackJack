@@ -15,7 +15,7 @@ class BlackJackHand:
 
     def __init__(self):
         self._cards: List[Card] = BlackJackHand.deck.get_initial_cards()
-        self._points: int = Deck.sum_points(self._cards)
+        self._points: int = BlackJackHand.calculate_points(self._cards)
         self._aces: int = 0
         for card in self._cards:
             self._check_if_ace(card)
@@ -58,3 +58,8 @@ class BlackJackHand:
     def _update_points(self, card: Card) -> None:
         self._points += card.value
         self._check_ace_points()
+    
+    @staticmethod
+    def calculate_points(cards: List[Card]) -> int:
+        """Calculate the points of the list of cards received as a parameter"""
+        return sum([card.value for card in cards])
