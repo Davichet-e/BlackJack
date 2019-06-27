@@ -5,7 +5,7 @@ from time import sleep
 from typing import List
 
 from blackjack_player import BlackJackPlayer
-from hand import BlackJackHand
+from blackjack_hand import BlackJackHand
 
 ###########################################################################################
 
