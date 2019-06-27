@@ -21,8 +21,8 @@ class Card(NamedTuple):
 class Deck:
     """This class implements the standard 52-card deck"""
 
-    _SUITS: Tuple[str, ...] = ("♣", "♥", "♠", "♦")
-    _CARDS: Dict[str, int] = dict(
+    SUITS: Tuple[str, ...] = ("♣", "♥", "♠", "♦")
+    CARDS: Dict[str, int] = dict(
         ACE=11,
         TWO=2,
         THREE=3,
@@ -41,8 +41,8 @@ class Deck:
     def __init__(self):
         self._deck: List[Card] = [
             Card(card_name, card_value, suit)
-            for suit in self._SUITS
-            for card_name, card_value in self._CARDS.items()
+            for suit in Deck.SUITS
+            for card_name, card_value in Deck.CARDS.items()
         ]
         shuffle(self._deck)
 
@@ -59,27 +59,11 @@ class Deck:
     def __getitem__(self, position: int) -> Card:
         return self._deck[position]
 
-    @property
-    def suits(self) -> Tuple[str, ...]:
-        """Returns the suits of the deck"""
-        return self._SUITS
-
-    @property
-    def cards(self) -> Dict[str, int]:
-        """Returns a dictionary with the cards and its correspondant values"""
-        return self._CARDS
-
     def deal_card(self) -> Card:
         """Returns a random card of the deck."""
-        card: Card = self._deck.pop()
-        return card
+        return self._deck.pop()
 
     def get_initial_cards(self) -> List[Card]:
         """Returns 2 random cards of the deck"""
         initial_cards: List[Card] = [self._deck.pop(), self._deck.pop()]
         return initial_cards
-
-    @staticmethod
-    def sum_points(cards: List[Card]) -> int:
-        """Sum the points of the list of cards which are received as a parameter"""
-        return sum([card.value for card in cards])
