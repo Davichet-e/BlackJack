@@ -131,7 +131,7 @@ def player_win_or_lose(player: BlackJackPlayer) -> bool:
 
 def check_if_yes(user_decision: str) -> bool:
     """Checks if the player decision is affirmative"""
-    return user_decision.strip().lower() in ("y", "yes", "1", "true")
+    return user_decision.strip().lower() in {"y", "yes", "1", "true"}
 
 
 def ask_if_hit() -> bool:
