@@ -40,7 +40,7 @@ class BlackJackHand:
         self._check_if_ace(card)
         self._cards.append(card)
         self._update_points(card)
-        self._check_if_lose()
+        self._check_if_lost()
 
     def _check_if_ace(self, card: Card) -> None:
         if card.name == "ACE":
@@ -51,7 +51,7 @@ class BlackJackHand:
             self._points -= 10
             self._aces -= 1
 
-    def _check_if_lose(self) -> None:
+    def _check_if_lost(self) -> None:
         if self._points > 21:
             self._points = 0
 

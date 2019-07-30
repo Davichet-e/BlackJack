@@ -157,14 +157,14 @@ def player_turn(player: BlackJackPlayer) -> None:
     print()
     sleep(1)
     while not player_win_or_lose(player):
-        hit = ask_if_hit()
+        hit: bool = ask_if_hit()
         if hit:
             player.deal_card()
             print(f"\t\t\t\tNow, your cards are: {player.hand}")
             sleep(1)
 
         else:
-            print(f"\t\t\t\t{player.name} stanted\n")
+            print(f"\t\t\t\t{player} stood\n")
             break
 
 
@@ -186,7 +186,7 @@ def dealer_turn() -> None:
     )
     sleep(2)
     print(
-        f"\t\t\t\tThe dealer cards are {dealer_hand.cards[0]} and {dealer_hand.cards[1]}\n"
+        f"\t\t\t\tThe dealer's cards are {dealer_hand.cards[0]} and {dealer_hand.cards[1]}\n"
     )
 
     while not dealer_lost() and dealer_hand.points < 17:
@@ -194,7 +194,7 @@ def dealer_turn() -> None:
         print("\t\t\t\tThe dealer is going to hit a card\n")
         dealer_hand.deal_card()
         sleep(1)
-        print(f"\t\t\t\tNow, the dealer cards are: {dealer_hand}")
+        print(f"\t\t\t\tNow, the dealer's cards are: {dealer_hand}")
 
 
 def end_game() -> None:
@@ -205,23 +205,27 @@ def end_game() -> None:
             "\t      ##############################################"
         )
     )
+    dealer_points: int = dealer_hand.points
+
     for player in players:
-        if player.points == 21 or player.points > dealer_hand.points:
+        player_points: int = player.points
+
+        if player_points == 21 or player_points > dealer_points:
             player.actual_money += player.actual_bet
             print(f"\t\t\t\t{player} won {player.actual_bet * 2}€ :)\n")
         # Checks if the player points are 0 or if they are less than the dealer's ones
-        elif not player.points or player.points < dealer_hand.points:
+        elif not player_points or player_points < dealer_points:
             player.actual_money -= player.actual_bet
             print(f"\t\t\t\t{player} lost against the dealer :(\n")
 
         else:
-            print(f"\t\t\t\t{player}, it is a Tie! :|\n")
+            print(f"\t\t\t\t{player}, it is a tie! :|\n")
     sleep(1)
 
 
-def ask_if_reset(player: BlackJackPlayer) -> bool:
+def ask_if_next_game(player: BlackJackPlayer) -> bool:
     """Ask a player if he/she wants to play another game"""
-    player_resets: bool = False
+    player_next_game: bool = False
     final_balance: str = f"{player.actual_money - player.initial_money} €"
     # Check if 'final_balance' is negative, if not, adds a '+' sign
     if "-" not in final_balance:
@@ -234,7 +238,7 @@ def ask_if_reset(player: BlackJackPlayer) -> bool:
 
         if check_if_yes(decision):
             player.initialize_attributes()
-            player_resets = True
+            player_next_game = True
 
         else:
             print(
@@ -247,7 +251,7 @@ def ask_if_reset(player: BlackJackPlayer) -> bool:
     else:
         print(f"\t\t\t\t{player}, you have lost all your money. Thanks for playing\n")
 
-    return player_resets
+    return player_next_game
 
 
 def next_game() -> bool:
@@ -259,8 +263,8 @@ def next_game() -> bool:
             "\t   #########################################"
         )
     )
-    
-    players = [player for player in players if ask_if_reset(player)]
+
+    players = [player for player in players if ask_if_next_game(player)]
 
     print("\n\n\n\n\n")
 
