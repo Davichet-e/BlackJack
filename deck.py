@@ -61,6 +61,9 @@ class Deck:
 
     def deal_card(self) -> Card:
         """Returns a random card of the deck."""
+        # If the deck is empty, initialize it
+        if not self._deck:
+            self.__init__()
         return self._deck.pop()
 
     def get_initial_cards(self) -> List[Card]:

@@ -33,7 +33,7 @@ class BlackJackHand:
         return self._points
 
     def initialize_attributes(self) -> None:
-        BlackJackHand.__init__(self)
+        self.__init__()
 
     def deal_card(self) -> None:
         card: Card = BlackJackHand.deck.deal_card()
@@ -58,7 +58,7 @@ class BlackJackHand:
     def _update_points(self, card: Card) -> None:
         self._points += card.value
         self._check_ace_points()
-    
+
     @staticmethod
     def calculate_points(cards: List[Card]) -> int:
         """Calculate the points of the list of cards received as a parameter"""
