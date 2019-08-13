@@ -50,9 +50,6 @@ class Deck:
         cards_repr: str = "\n".join([f"{card}" for card in self._deck])
         return f"Deck cards:\n\n{cards_repr}"
 
-    def __repr__(self) -> str:
-        return f"Deck(deck={self._deck})"
-
     def __len__(self):
         return len(self._deck)
 
