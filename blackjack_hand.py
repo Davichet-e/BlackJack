@@ -22,7 +22,7 @@ class BlackJackHand:
         self._check_ace_points()
 
     def __str__(self) -> str:
-        return ", ".join(map(str, self._cards)) + "."
+        return ", ".join([f"{card}" for card in self._cards]) + "."
 
     @property
     def cards(self) -> List[Card]:
