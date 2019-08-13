@@ -118,11 +118,13 @@ def ask_player_bet(player: BlackJackPlayer) -> None:
 def player_win_or_lose(player: BlackJackPlayer) -> bool:
     """Checks if the player received as paramater won or lost"""
     result: bool = False
-    if player.points == 21:
+    player_points: int = player.hand.points
+
+    if player_points == 21:
         print("\t\t\t\tBLACKJACK")
         result = True
 
-    elif not player.points:
+    elif player_points == 0:
         print("\t\t\t\tBUST.\n\t\t\t\tI'm afraid you lose this game :(\n")
         result = True
 
@@ -152,14 +154,15 @@ def player_turn(player: BlackJackPlayer) -> None:
     print(f"\t\t\t\t{player}, your actual money is {player.actual_money} €\n")
 
     ask_player_bet(player)
+
     print("\t\t\t\tYour cards are: ")
-    print(f"\t\t\t\t{player.cards[0]} and {player.cards[1]}")
+    print(f"\t\t\t\t{player.hand.cards[0]} and {player.hand.cards[1]}")
     print()
     sleep(1)
     while not player_win_or_lose(player):
         hit: bool = ask_if_hit()
         if hit:
-            player.deal_card()
+            player.hand.deal_card()
             print(f"\t\t\t\tNow, your cards are: {player.hand}")
             sleep(1)
 
@@ -170,7 +173,7 @@ def player_turn(player: BlackJackPlayer) -> None:
 
 def dealer_lost() -> bool:
     """Check if the dealer lost"""
-    if not dealer_hand.points:
+    if dealer_hand.points == 0:
         print("\t\t\t\tThe dealer busted. The game ended :)\n")
         return True
     return False
@@ -208,7 +211,7 @@ def end_game() -> None:
     dealer_points: int = dealer_hand.points
 
     for player in players:
-        player_points: int = player.points
+        player_points: int = player.hand.points
 
         if player_points == 21 or player_points > dealer_points:
             player.actual_money += player.actual_bet
@@ -237,7 +240,7 @@ def ask_if_next_game(player: BlackJackPlayer) -> bool:
         )
 
         if check_if_yes(decision):
-            player.initialize_attributes()
+            player.hand.initialize_attributes()
             player_next_game = True
 
         else:
@@ -255,8 +258,9 @@ def ask_if_next_game(player: BlackJackPlayer) -> bool:
 
 
 def next_game() -> bool:
-    global players
     """Check if there are players for a next game"""
+    global players
+
     print(
         (
             "\t\t\t\t#########################################\tGame Finished"
