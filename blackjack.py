@@ -4,14 +4,14 @@ The 21 BlackJack now in python!
 from time import sleep
 from typing import List
 
-from blackjack_player import BlackJackPlayer
-from blackjack_hand import BlackJackHand
+from player import Player
+from hand import Hand
 
 ###########################################################################################
 
 
-players: List[BlackJackPlayer] = []
-dealer_hand: BlackJackHand = BlackJackHand()
+players: List[Player] = []
+dealer_hand: Hand = Hand()
 
 
 ###########################################################################################
@@ -69,7 +69,7 @@ def ask_number_of_people() -> int:
 
 def ask_and_set_player_attributes(num_of_people: int) -> None:
     """Ask the players their names and initial money and
-    pass them to the 'BlackJackPlayer' class"""
+    pass them to the 'Player' class"""
     for i in range(num_of_people):
         name: str = input(f"\t\t\t\tPlease, enter your name, Player {i + 1}\n\t\t\t\t")
         while True:
@@ -90,11 +90,11 @@ def ask_and_set_player_attributes(num_of_people: int) -> None:
                         "\t\t\t\tThe initial money must be greater or equal than 50\n"
                     )
                 else:
-                    players.append(BlackJackPlayer(name, initial_money))
+                    players.append(Player(name, initial_money))
                     break
 
 
-def ask_player_bet(player: BlackJackPlayer) -> None:
+def ask_player_bet(player: Player) -> None:
     """Ask the player received as paramater what bet does he/she wanna make"""
     while True:
         try:
@@ -115,7 +115,7 @@ def ask_player_bet(player: BlackJackPlayer) -> None:
                 break
 
 
-def player_win_or_lose(player: BlackJackPlayer) -> bool:
+def player_win_or_lose(player: Player) -> bool:
     """Checks if the player received as paramater won or lost"""
     result: bool = False
     player_points: int = player.hand.points
@@ -143,7 +143,7 @@ def ask_if_hit() -> bool:
     return check_if_yes(decision)
 
 
-def player_turn(player: BlackJackPlayer) -> None:
+def player_turn(player: Player) -> None:
     """Reproduce the player which receive as parameter turn"""
     print(
         (
@@ -226,7 +226,7 @@ def end_game() -> None:
     sleep(1)
 
 
-def ask_if_next_game(player: BlackJackPlayer) -> bool:
+def ask_if_next_game(player: Player) -> bool:
     """Ask a player if he/she wants to play another game"""
     player_next_game: bool = False
     final_balance: str = f"{player.actual_money - player.initial_money} €"

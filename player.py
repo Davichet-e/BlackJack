@@ -1,22 +1,22 @@
 """
-Class created to implement a casino player in Python
+Class created to implement a BlackJack player in Python
 Author: David García Morillo
 """
+from hand import Hand
 
 
 class Player:
-    """
-    This class implements a casino player in python\n
-    
-    Parameters
-    ----------
-    name: str\n
-    initial_money: int
-    """
+    """This class implements a BlackJack player in python"""
 
     def __init__(self, name: str, initial_money: int):
-        assert isinstance(name, str), "The type of 'name' must be str"
-        assert isinstance(initial_money, int), "The type of 'initial_money' must be int"
+        if not isinstance(name, str):
+            raise ValueError("Must assign to a string value")
+
+        if not isinstance(initial_money, int):
+            raise ValueError("Must assign to a integer value")
+
+        self._hand: Hand = Hand()
+
         self._name: str = name
         self._initial_money: int = initial_money
         self._actual_money: int = initial_money
@@ -26,10 +26,11 @@ class Player:
         return self._name
 
     def __repr__(self) -> str:
-        return (
-            f"Player(name={self._name}, initial money={self._initial_money}, "
-            f"actual money={self._actual_money}, actual bet={self._actual_bet})"
-        )
+        return f"Player(name={self._name}, initial money={self._initial_money}"
+
+    @property
+    def hand(self) -> Hand:
+        return self._hand
 
     @property
     def name(self) -> str:
@@ -45,7 +46,9 @@ class Player:
 
     @actual_money.setter
     def actual_money(self, money: int) -> None:
-        assert isinstance(money, int)
+        if not isinstance(money, int):
+            raise ValueError("Must assign to a integer value")
+
         self._actual_money = money
 
     @property
@@ -54,5 +57,7 @@ class Player:
 
     @actual_bet.setter
     def actual_bet(self, new_bet: int) -> None:
-        assert isinstance(new_bet, int)
+        if not isinstance(new_bet, int):
+            raise ValueError("Must assign to a integer value")
+
         self._actual_bet = new_bet

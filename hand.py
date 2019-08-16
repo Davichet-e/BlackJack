@@ -1,21 +1,21 @@
 """
 Author: David García Morillo
 """
-from typing import List
+from typing import ClassVar, List
 
 from deck import Card, Deck
 
 
-class BlackJackHand:
+class Hand:
     """
-    This class represents a 21 BlackJack hand on python 
+    This class represents a 21 BlackJack hand on python
     """
 
-    deck: Deck = Deck()
+    DECK: ClassVar[Deck] = Deck()
 
     def __init__(self):
-        self._cards: List[Card] = BlackJackHand.deck.get_initial_cards()
-        self._points: int = BlackJackHand.calculate_points(self._cards)
+        self._cards: List[Card] = Hand.DECK.get_initial_cards()
+        self._points: int = Hand.calculate_points(self._cards)
         self._aces: int = 0
         for card in self._cards:
             self._check_if_ace(card)
@@ -36,24 +36,24 @@ class BlackJackHand:
         self.__init__()
 
     def deal_card(self) -> None:
-        card: Card = BlackJackHand.deck.deal_card()
+        card: Card = Hand.DECK.deal_card()
         self._check_if_ace(card)
         self._cards.append(card)
         self._update_points(card)
-        self._check_if_lost()
+        if self._check_if_lost():
+            self._points = 0
 
     def _check_if_ace(self, card: Card) -> None:
         if card.name == "ACE":
             self._aces += 1
 
     def _check_ace_points(self) -> None:
-        while self._points > 21 and self._aces:
+        while self._aces > 0 and self._check_if_lost():
             self._points -= 10
             self._aces -= 1
 
-    def _check_if_lost(self) -> None:
-        if self._points > 21:
-            self._points = 0
+    def _check_if_lost(self) -> bool:
+        return self._points > 21
 
     def _update_points(self, card: Card) -> None:
         self._points += card.value
