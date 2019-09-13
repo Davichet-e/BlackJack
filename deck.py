@@ -4,25 +4,31 @@ Author: David García Morillo
 """
 
 from random import shuffle
-from typing import Dict, List, Tuple, NamedTuple
+from typing import ClassVar, Dict, List, Tuple, NamedTuple
 
 
 class Card(NamedTuple):
     """This class implements the cards of the standard 52-card deck"""
 
     name: str
-    value: int
     suit: str
 
     def __str__(self) -> str:
         return f"{self.name} of {self.suit}"
 
+    @property
+    def value(self) -> int:
+        return Deck.CARDS[self.name]
+
 
 class Deck:
-    """This class implements the standard 52-card deck"""
+    """This class implements the standard 52-card deck.
 
-    SUITS: Tuple[str, ...] = ("♣", "♥", "♠", "♦")
-    CARDS: Dict[str, int] = dict(
+    The number of cards that contains is defined
+    by 52 times the `n_decks` parameter"""
+
+    SUITS: ClassVar[Tuple[str, ...]] = ("♣", "♥", "♠", "♦")
+    CARDS: ClassVar[Dict[str, int]] = dict(
         ACE=11,
         TWO=2,
         THREE=3,
@@ -38,17 +44,14 @@ class Deck:
         KING=10,
     )
 
-    def __init__(self):
+    def __init__(self, n_decks: int):
         self._deck: List[Card] = [
-            Card(card_name, card_value, suit)
+            Card(card_name, suit)
             for suit in Deck.SUITS
-            for card_name, card_value in Deck.CARDS.items()
+            for card_name in Deck.CARDS
+            for _ in range(n_decks)
         ]
         shuffle(self._deck)
-
-    def __str__(self) -> str:
-        cards_repr: str = "\n".join([f"{card}" for card in self._deck])
-        return f"Deck cards:\n\n{cards_repr}"
 
     def __len__(self):
         return len(self._deck)
@@ -60,10 +63,9 @@ class Deck:
         """Returns a random card of the deck."""
         # If the deck is empty, initialize it
         if not self._deck:
-            self.__init__()
+            raise ValueError("The deck is empty. GAME OVER.")
         return self._deck.pop()
 
     def get_initial_cards(self) -> List[Card]:
         """Returns 2 random cards of the deck"""
-        initial_cards: List[Card] = [self._deck.pop(), self._deck.pop()]
-        return initial_cards
+        return [self._deck.pop(), self._deck.pop()]
