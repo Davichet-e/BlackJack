@@ -1,9 +1,8 @@
 # BlackJack.py
-The 21 BlackJack, now in Python, 
+The 21 BlackJack, now in Python.
 
+# Features
+Multiplayer blackjack with casino's features, hit, split, double, surrender...
 
-# Requeriments
-You must have installed <a href="https://www.python.org/downloads/">python</a> interpreter
-
-# Run it
-In order to run this application, you have to run `python blackjack.py` in your terminal
+# Bugs
+If you find a bug, please feel free to post it on the Issues label.
