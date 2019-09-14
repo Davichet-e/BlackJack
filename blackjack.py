@@ -1,12 +1,11 @@
-"""
-The 21 BlackJack now in python!
-"""
+"""The 21 BlackJack now in python."""
+
 from time import sleep
 from typing import List, Optional
 
-from player import Player
-from hand import Hand
 from deck import Deck
+from hand import Hand
+from player import Player
 
 ###########################################################################################
 
@@ -19,7 +18,7 @@ PLAYERS: List[Player] = []
 
 
 def blackjack() -> None:
-    """A multiplayer 21 BlackJack simulator. Just call this function, and enjoy!"""
+    """A multiplayer 21 BlackJack simulator. Just call this function, and enjoy."""
     global DECK, DEALER_HAND
 
     print("This BlackJack Game has been created by David Garcia Morillo")
@@ -58,7 +57,8 @@ def blackjack() -> None:
 
 
 def start_game() -> None:
-    """Starts the game"""
+    """Start the game by asking
+    the number of people and setting their attributes."""
     number_of_people: int = ask_number_of_people()
     ask_and_set_player_attributes(number_of_people)
 
@@ -208,7 +208,7 @@ def player_turn(player: Player) -> None:  # FIXME
 
             elif user_decision in ("d", "double"):
                 if not has_doubled:
-                    error_message: Optional[str] = player.double()
+                    error_message = player.double()
                     if error_message:
                         print(error_message)
                     else:
@@ -219,11 +219,12 @@ def player_turn(player: Player) -> None:  # FIXME
 
             elif user_decision in ("surr", "surrender"):
                 if not has_doubled:
-                    error_message: Optional[str] = player.surrender()
+                    error_message = player.surrender()
                     if error_message:
                         print(error_message)
                     else:
                         print("You have surrendered!")
+                        break
                 else:
                     print("You cannot double because you have already doubled")
 

@@ -3,12 +3,12 @@ This module implements the standard 52-card deck and its correspondents cards
 Author: David García Morillo
 """
 
-from random import shuffle
-from typing import ClassVar, Dict, List, Tuple, NamedTuple
+import random
+from typing import ClassVar, Dict, List, NamedTuple, Tuple
 
 
 class Card(NamedTuple):
-    """This class implements the cards of the standard 52-card deck"""
+    """Implement a playing card"""
 
     name: str
     suit: str
@@ -22,7 +22,7 @@ class Card(NamedTuple):
 
 
 class Deck:
-    """This class implements the standard 52-card deck.
+    """Implement the standard 52-card deck.
 
     The number of cards that contains is defined
     by 52 times the `n_decks` parameter"""
@@ -51,7 +51,7 @@ class Deck:
             for card_name in Deck.CARDS
             for _ in range(n_decks)
         ]
-        shuffle(self._deck)
+        random.shuffle(self._deck)
 
     def __len__(self):
         return len(self._deck)

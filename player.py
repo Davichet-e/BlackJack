@@ -2,9 +2,10 @@
 Class created to implement a BlackJack player in Python
 Author: David García Morillo
 """
-from hand import Hand
-from deck import Deck, Card
 from typing import List, Optional, Tuple
+
+from deck import Card, Deck
+from hand import Hand
 
 
 class Player:
@@ -88,7 +89,7 @@ class Player:
         elif len(self.hands) == 2:
             error_message = "Cannot surrender because you have already splitted!"
         else:
-            self.actual_bet /= 2
+            self.actual_bet //= 2
             self.hands[0]._points = 0
         return error_message
 
@@ -115,7 +116,7 @@ class Player:
             cards: List[Card] = [first_hand_cards.pop(), self._deck.deal_card()]
             self._hands.append(Hand(deck=self._deck, from_cards=cards))
 
-            first_hand_cards.deal_card()
+            self._hands[0].deal_card()
 
         return error_message
 
@@ -126,7 +127,7 @@ class Player:
         # If it has a blackjack, the earnings increments 1.5 times
         for hand in self._hands:
             if hand.has_blackjack():
-                earnings *= 1.5
+                earnings = round(earnings * 1.5)
 
         self._actual_money += earnings
         return earnings
@@ -134,4 +135,3 @@ class Player:
     def lose(self) -> None:
         """Update the money substracting the actual bet"""
         self._actual_money -= self._actual_bet
-
