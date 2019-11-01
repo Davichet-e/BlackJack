@@ -1,22 +1,26 @@
 """
 Author: David García Morillo
 """
-from typing import ClassVar, List, Optional
+from typing import List, Optional
 
 from deck import Card, Deck
 
 
 class Hand:
-    """
-    This class represents a 21 BlackJack hand on python
+    """Represent a 21 BlackJack hand.
+
+    If `from_cards` parameter is supplied, create a hand based on those cards.
     """
 
-    def __init__(self, deck: Deck, from_cards: Optional[List[Card]] = None) -> None:
-        self._DECK = deck
+    def __init__(self, deck: Deck, *, from_cards: Optional[List[Card]] = None) -> None:
+        self._deck = deck
+
         if from_cards:
             self._cards: List[Card] = from_cards
+
         else:
-            self._cards = self._DECK.get_initial_cards()
+            self._cards = self._deck.get_initial_cards()
+
         self._points: int = Hand.calculate_points(self._cards)
         self._aces: int = 0
         for card in self._cards:
@@ -40,15 +44,17 @@ class Hand:
 
     def initialize_attributes(self) -> None:
         """Resets all the attributes of the instance"""
-        self.__init__(self._DECK)
+        self = Hand(self._deck)
 
     def deal_card(self) -> None:
         """Deal a card of the deck and add it to the list of cards"""
-        card: Card = self._DECK.deal_card()
-        self._check_if_ace(card)
+        card: Card = self._deck.deal_card()
         self._cards.append(card)
+
+        self._check_if_ace(card)
         self._update_points()
-        if self._check_if_lost():
+
+        if self._points > 21:
             self._points = 0
 
     def has_blackjack(self) -> bool:
@@ -60,12 +66,9 @@ class Hand:
             self._aces += 1
 
     def _check_ace_points(self) -> None:
-        while self._aces > 0 and self._check_if_lost():
+        while self._aces > 0 and self._points > 21:
             self._points -= 10
             self._aces -= 1
-
-    def _check_if_lost(self) -> bool:
-        return self._points > 21
 
     def _update_points(self) -> None:
         self._points = Hand.calculate_points(self.cards)

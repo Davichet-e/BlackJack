@@ -13,46 +13,6 @@ DECK: Deck
 DEALER_HAND: Hand
 PLAYERS: List[Player] = []
 
-
-###########################################################################################
-
-
-def blackjack() -> None:
-    """A multiplayer 21 BlackJack simulator. Just call this function, and enjoy."""
-    global DECK, DEALER_HAND
-
-    print("This BlackJack Game has been created by David Garcia Morillo")
-    # Initialize `DECK` and `DEALER_HAND`
-    while True:
-        try:
-            n_of_decks = int(input("How many decks do you want to use (4-8)\n> "))
-        except ValueError:
-            print("Please, use only numbers.\n")
-        else:
-            if not 3 < n_of_decks <= 8:
-                print("The number of decks must be between 4 and 8\n")
-            else:
-                break
-
-    DECK = Deck(n_of_decks)
-    DEALER_HAND = Hand(DECK)
-
-    start_game()
-
-    while True:
-        print("###### Game Started ######\n")
-
-        print(f"The first card of the dealer is {DEALER_HAND.cards[0]}")
-
-        for player in PLAYERS:
-            player_turn(player)
-
-        dealer_turn()
-        end_game()
-        if not next_game():
-            break
-
-
 ###########################################################################################
 
 
@@ -67,7 +27,7 @@ def ask_number_of_people() -> int:
     """Ask how many people it is going to start playing the game"""
     while True:
         try:
-            number_of_people: int = int(
+            number_of_people = int(
                 input("How many people are going to play? (1-5)\n> ")
             )
         except ValueError:
@@ -121,13 +81,13 @@ def ask_player_bet(player: Player) -> None:
                 print("Your bet must be greater than 0.\n")
 
             else:
-                player.actual_bet = bet
+                player.bet = bet
                 break
 
 
 def hand_win_or_lose(hand: Hand) -> bool:
     """Checks if the player received as paramater won or lost"""
-    result: bool = False
+    result = False
     hand_points: int = hand.points
     if hand_points == 21:
         if hand.has_blackjack():
@@ -157,23 +117,22 @@ def ask_player_action() -> bool:
     return check_if_yes(decision)
 
 
-def player_turn(player: Player) -> None:  # FIXME
+def player_turn(player: Player) -> None:
     """TODO"""
     print(f"###### {player}'s turn ######\n")
     print(f"{player}, your actual money is {player.actual_money} €\n")
 
     ask_player_bet(player)
 
-    print("Your cards are: ")
     print(
+        "Your cards are: "
         f"{player.hands[0].cards[0]} and {player.hands[0].cards[1]} "
-        f"({player.hands[0].points} points)"
+        f"({player.hands[0].points} points)\n"
     )
-    print()
     sleep(1)
 
-    has_doubled: bool = False
-    has_splitted: bool = False
+    has_doubled = False
+    has_splitted = False
     for i, hand in enumerate(player.hands):
         # If the player has doubled, he can only hit one more time
         while not hand_win_or_lose(hand) and (not has_doubled or len(hand.cards) < 3):
@@ -226,7 +185,7 @@ def player_turn(player: Player) -> None:  # FIXME
                         print("You have surrendered!")
                         break
                 else:
-                    print("You cannot double because you have already doubled")
+                    print("You cannot surrender because you have already doubled")
 
             else:
                 print(
@@ -269,9 +228,9 @@ def end_game() -> None:
             ):
                 money_earned: int = player.win()
 
-                hand_specification = ""
-                if len(player.hands) == 1:
-                    hand_specification = f" (#{i + 1} hand)"
+                hand_specification = (
+                    f" (#{i + 1} hand)" if len(player.hands) == 1 else ""
+                )
 
                 print(f"{player}{hand_specification} won {money_earned}€ :)\n")
             # Checks if the player points are 0 or if they are less than the dealer's ones
@@ -286,8 +245,8 @@ def end_game() -> None:
 
 def ask_if_next_game(player: Player) -> bool:
     """Ask a player if he/she wants to play another game"""
-    player_next_game: bool = False
-    final_balance: str = f"{player.actual_money - player.initial_money} €"
+    player_next_game = False
+    final_balance = f"{player.actual_money - player.initial_money} €"
     # Check if 'final_balance' is negative, if not, adds a '+' sign
     if "-" not in final_balance:
         final_balance = "+" + final_balance
@@ -313,7 +272,7 @@ def ask_if_next_game(player: Player) -> bool:
     return player_next_game
 
 
-def next_game() -> bool:  # FIXME
+def next_game() -> bool:
     """Check if there are players for a next game"""
     global PLAYERS
 
@@ -331,4 +290,33 @@ def next_game() -> bool:  # FIXME
 
 
 if __name__ == "__main__":
-    blackjack()
+    print("This BlackJack Game has been created by David Garcia Morillo")
+    # Initialize `DECK` and `DEALER_HAND`
+    while True:
+        try:
+            n_of_decks = int(input("How many decks do you want to use (4-8)\n> "))
+        except ValueError:
+            print("Please, use only numbers.\n")
+        else:
+            if not 3 < n_of_decks <= 8:
+                print("The number of decks must be between 4 and 8\n")
+            else:
+                break
+
+    DECK = Deck(n_of_decks)
+    DEALER_HAND = Hand(DECK)
+
+    start_game()
+
+    while True:
+        print("###### Game Started ######\n")
+
+        print(f"The first card of the dealer is {DEALER_HAND.cards[0]}")
+
+        for player in PLAYERS:
+            player_turn(player)
+
+        dealer_turn()
+        end_game()
+        if not next_game():
+            break
