@@ -55,25 +55,33 @@ class Player:
             hand.initialize_attributes()
 
     def hit(self, hand_index: int) -> None:
-        """TODO"""
+        """Deal a card of the deck
+        and append it to the hand selected with the `hand_index` parameter"""
+
         self._hands[hand_index].deal_card()
 
     def double(self) -> Optional[str]:
-        """TODO"""
+        """Double your bet if possible, else return an error message"""
+
         error_message: Optional[str] = None
         if self.bet * 2 > self.actual_money:
             error_message = "Cannot double because you have not enough money!"
+
         elif len(self._hands[0].cards) != 2:
             error_message = "Cannot double because you have already hit!"
+
         elif len(self._hands) == 2:
             error_message = "Cannot double because you have already splitted!"
+
         else:
             self._bet *= 2
 
         return error_message
 
     def surrender(self) -> Optional[str]:
-        """TODO"""
+        """Surrender the hand if possible
+        (you lose only the half of the bet), else return an error message"""
+
         error_message: Optional[str] = None
         if len(self.hands[0].cards) > 2:
             error_message = "Cannot surrender because you have already hit!"
@@ -88,7 +96,7 @@ class Player:
         return error_message
 
     def split(self) -> Optional[str]:
-        """TODO"""
+        """Split the hand if possible, else return an error message"""
         error_message: Optional[str] = None
 
         first_hand_cards: List[Card] = self.hands[0].cards

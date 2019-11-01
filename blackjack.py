@@ -118,7 +118,9 @@ def ask_player_action() -> bool:
 
 
 def player_turn(player: Player) -> None:
-    """TODO"""
+    """Reproduce the player turn by asking the player
+    passed as parameter what does he want to do"""
+
     print(f"###### {player}'s turn ######\n")
     print(f"{player}, your actual money is {player.actual_money} €\n")
 
@@ -216,7 +218,8 @@ def dealer_turn() -> None:
 
 
 def end_game() -> None:
-    """Checks which player wins or loses, and manage their money according to that"""
+    """Checks which player wins or loses, and call the corresponding functions according to that"""
+    
     print("###### Results ######\n")
     dealer_points: int = DEALER_HAND.points
 

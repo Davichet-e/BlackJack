@@ -9,8 +9,9 @@ from deck import Card, Deck
 class Hand:
     """Represent a 21 BlackJack hand.
 
-    If `from_cards` parameter is supplied, create a hand based on those cards.
-    """
+    :param: `deck` -> `Deck` where to get the cards
+    
+    :param: `from_cards` -> If given, create a `Hand` based on those cards."""
 
     def __init__(self, deck: Deck, *, from_cards: Optional[List[Card]] = None) -> None:
         self._deck = deck
@@ -22,7 +23,7 @@ class Hand:
             self._cards = self._deck.get_initial_cards()
 
         self._points: int = Hand.calculate_points(self._cards)
-        self._aces: int = 0
+        self._aces = 0
         for card in self._cards:
             self._check_if_ace(card)
         self._check_ace_points()
