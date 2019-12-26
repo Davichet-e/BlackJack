@@ -1,6 +1,6 @@
 """The 21 BlackJack now in python."""
 
-from time import sleep
+import time
 from typing import List, Optional
 
 from deck import Deck
@@ -87,19 +87,20 @@ def ask_player_bet(player: Player) -> None:
 
 def hand_win_or_lose(hand: Hand) -> bool:
     """Checks if the player received as paramater won or lost"""
-    result = False
     hand_points: int = hand.points
     if hand_points == 21:
         if hand.has_blackjack():
             print("BLACKJACK!")
         else:
             print("YOU GOT 21 POINTS!")
-
         result = True
 
     elif hand_points == 0:
         print("BUST.\nI'm afraid you lose this game :(\n")
         result = True
+    
+    else:
+        result = False
 
     return result
 
@@ -111,7 +112,7 @@ def check_if_yes(user_decision: str) -> bool:
 
 def ask_player_action() -> bool:
     """Ask the player if he/she wants to hit"""
-    sleep(2)
+    time.sleep(2)
 
     decision = input("What do you want to do?\n> ")
     return check_if_yes(decision)
@@ -131,7 +132,7 @@ def player_turn(player: Player) -> None:
         f"{player.hands[0].cards[0]} and {player.hands[0].cards[1]} "
         f"({player.hands[0].points} points)\n"
     )
-    sleep(1)
+    time.sleep(1)
 
     has_doubled = False
     has_splitted = False
@@ -206,20 +207,20 @@ def dealer_lost() -> bool:
 def dealer_turn() -> None:
     """Reproduce the dealer turn"""
     print("###### Dealer's Turn ######\n")
-    sleep(2)
+    time.sleep(2)
     print(f"The dealer's cards are {DEALER_HAND.cards[0]} and {DEALER_HAND.cards[1]}\n")
 
     while not dealer_lost() and DEALER_HAND.points < 17:
-        sleep(2)
+        time.sleep(2)
         print("The dealer is going to hit a card\n")
         DEALER_HAND.deal_card()
-        sleep(1)
+        time.sleep(1)
         print(f"Now, the dealer's cards are: {DEALER_HAND}")
 
 
 def end_game() -> None:
     """Checks which player wins or loses, and call the corresponding functions according to that"""
-    
+
     print("###### Results ######\n")
     dealer_points: int = DEALER_HAND.points
 
@@ -243,7 +244,7 @@ def end_game() -> None:
 
             else:
                 print(f"{player}, it is a tie! :|\n")
-    sleep(1)
+    time.sleep(1)
 
 
 def ask_if_next_game(player: Player) -> bool:
