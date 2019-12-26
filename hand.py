@@ -45,7 +45,7 @@ class Hand:
 
     def initialize_attributes(self) -> None:
         """Resets all the attributes of the instance"""
-        self = Hand(self._deck)
+        self.__init__(self._deck)
 
     def deal_card(self) -> None:
         """Deal a card of the deck and add it to the list of cards"""
